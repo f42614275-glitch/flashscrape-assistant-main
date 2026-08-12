@@ -1,8 +1,8 @@
-import { r as createServerFn, t as TSS_SERVER_FUNCTION } from "./server-ey4Ql8m12.mjs";
+import { r as createServerFn, t as TSS_SERVER_FUNCTION } from "./server-B_bFi4842.mjs";
 import { Ct as string, bt as number, ct as _enum, ft as array, pt as boolean, xt as object } from "../_libs/@ai-sdk/gateway+[...].mjs";
 import { t as generateText } from "../_libs/ai.mjs";
 import { t as createOpenAICompatible } from "../_libs/ai-sdk__openai-compatible.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/careercompass.functions-BRPy_fRW.js
+//#region node_modules/.nitro/vite/services/ssr/assets/careercompass.functions-CSfWACMW.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
 	return Object.assign(splitImportFn, {

@@ -4,11 +4,11 @@ import { c as HeadContent, d as Outlet, f as lazyRouteComponent, g as useRouter,
 import { i as require_jsx_runtime } from "../_libs/@radix-ui/react-label+[...].mjs";
 import { t as QueryClient } from "../_libs/tanstack__query-core.mjs";
 import { t as QueryClientProvider } from "../_libs/tanstack__react-query.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/router-Bexs1BJ5.js
-var router_Bexs1BJ5_exports = /* @__PURE__ */ __exportAll({ getRouter: () => getRouter });
+//#region node_modules/.nitro/vite/services/ssr/assets/router-B9e-0Afg.js
+var router_B9e_0Afg_exports = /* @__PURE__ */ __exportAll({ getRouter: () => getRouter });
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var styles_default = "/assets/styles-DO7lLZnC.css";
+var styles_default = "/assets/styles-CdBTgBTf.css";
 function reportLovableError(error, context = {}) {
 	if (typeof window === "undefined") return;
 	window.__lovableEvents?.captureException?.(error, {
@@ -196,7 +196,7 @@ var Route$2 = createFileRoute("/")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-var $$splitComponentImporter$1 = () => import("./career-BLIO-3BG.mjs");
+var $$splitComponentImporter$1 = () => import("./career-roqUJLDJ.mjs");
 var Route$1 = createFileRoute("/career")({
 	head: () => ({ meta: [
 		{ title: "AI Career Finder — NAAM NAHI PATA" },
@@ -215,7 +215,7 @@ var Route$1 = createFileRoute("/career")({
 	] }),
 	component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
-var $$splitComponentImporter = () => import("./college-BFtUqUWO.mjs");
+var $$splitComponentImporter = () => import("./college-BMpt6Unm.mjs");
 var Route = createFileRoute("/college")({
 	head: () => ({ meta: [
 		{ title: "Dream College Analyzer — NAAM NAHI PATA" },
@@ -262,4 +262,4 @@ var getRouter = () => {
 	});
 };
 //#endregion
-export { getRouter, router_Bexs1BJ5_exports as t };
+export { getRouter, router_B9e_0Afg_exports as t };

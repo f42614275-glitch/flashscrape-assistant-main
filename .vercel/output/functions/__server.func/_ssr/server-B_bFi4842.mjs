@@ -5,7 +5,7 @@ import { A as isNotFound, C as resolveManifestAssetLink, D as isResolvedRedirect
 import { n as createMemoryHistory } from "../_libs/tanstack__history.mjs";
 import { a as defaultSerovalPlugins, c as makeSerovalPlugin, d as toCrossJSONStream, i as getOrigin, l as fromJSON, n as attachRouterServerSsrUtils, o as createRawStreamRPCPlugin, r as getNormalizedURL, s as createSerializationAdapter, t as mergeHeaders, u as toCrossJSONAsync } from "../_libs/@tanstack/router-core+[...].mjs";
 import { i as require_jsx_runtime } from "../_libs/@radix-ui/react-label+[...].mjs";
-import { n as createCsrfMiddleware } from "./server-ey4Ql8m1.mjs";
+import { n as createMiddleware } from "./server-B_bFi484.mjs";
 import { AsyncLocalStorage } from "node:async_hooks";
 require_react();
 var import_jsx_runtime = require_jsx_runtime();
@@ -92,7 +92,7 @@ var HEADERS = { TSS_SHELL: "X-TSS_SHELL" };
 * the dev styles URL for route-scoped CSS collection.
 */
 async function getStartManifest(matchedRoutes) {
-	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-CI53fKh_.mjs");
+	const { tsrStartManifest } = await import("../_tanstack-start-manifest_v-Bj4FzvmE.mjs");
 	const startManifest = tsrStartManifest();
 	let routes = startManifest.routes;
 	routes[rootRouteId];
@@ -114,19 +114,19 @@ async function getStartManifest(matchedRoutes) {
 var manifest = {
 	"6b2e61dd565fd5251abae1a9741ce2fcd7f30e35838a1fab62e71d110f107711": {
 		functionName: "analyzeCollege_createServerFn_handler",
-		importer: () => import("./careercompass.functions-BRPy_fRW.mjs")
+		importer: () => import("./careercompass.functions-CSfWACMW.mjs")
 	},
 	"78be9b0fdcbf9361fb6335f4faaeb4cb625f9e21fe80d8a73bb23303f5ff2c82": {
 		functionName: "analyzeCareer_createServerFn_handler",
-		importer: () => import("./careercompass.functions-BRPy_fRW.mjs")
+		importer: () => import("./careercompass.functions-CSfWACMW.mjs")
 	},
 	"e0e98e52c3b50e18dcdfe0694b2b20ecd3734e03574803bb2d088aed339e417c": {
 		functionName: "generateQuestions_createServerFn_handler",
-		importer: () => import("./careercompass.functions-BRPy_fRW.mjs")
+		importer: () => import("./careercompass.functions-CSfWACMW.mjs")
 	},
 	"e850f7695cb6baab8ecb22cae7882b99ed37956cb24efd1f52c9adfebb10745e": {
 		functionName: "reportInaccuracy_createServerFn_handler",
-		importer: () => import("./careercompass.functions-BRPy_fRW.mjs")
+		importer: () => import("./careercompass.functions-CSfWACMW.mjs")
 	}
 };
 async function getServerFnById(id, access) {
@@ -392,6 +392,59 @@ function serverFnBaseToMiddleware(options) {
 			}
 		}
 	};
+}
+var innerCreateCsrfMiddleware = (opts = {}) => {
+	return createMiddleware().server(async (ctx) => {
+		const csrfCtx = ctx;
+		if (opts.filter && !await opts.filter(csrfCtx)) return ctx.next();
+		if (await isCsrfRequestAllowed(opts, csrfCtx)) return ctx.next();
+		return getFailureResponse(opts, csrfCtx);
+	});
+};
+var createCsrfMiddleware = innerCreateCsrfMiddleware;
+async function isCsrfRequestAllowed(opts, ctx) {
+	const result = await getCsrfRequestValidationResult(opts, ctx);
+	return result === true || result === void 0 && opts.allowRequestsWithoutOriginCheck === true;
+}
+async function getCsrfRequestValidationResult(opts, ctx) {
+	const fetchSite = ctx.request.headers.get("Sec-Fetch-Site");
+	if (fetchSite !== null) return matchValue(opts.secFetchSite ?? "same-origin", fetchSite, ctx);
+	const origin = ctx.request.headers.get("Origin");
+	if (origin !== null) {
+		if (opts.origin) return matchValue(opts.origin, origin, ctx);
+		return origin === new URL(ctx.request.url).origin;
+	}
+	const referer = ctx.request.headers.get("Referer");
+	if (referer === null || opts.referer === false) return;
+	if (typeof opts.referer === "function") return opts.referer(referer, ctx);
+	if (opts.origin) {
+		const refererOrigin = getOriginFromUrl(referer);
+		return refererOrigin !== void 0 && matchValue(opts.origin, refererOrigin, ctx);
+	}
+	return isRefererSameOrigin(referer, new URL(ctx.request.url).origin);
+}
+async function matchValue(matcher, value, ctx) {
+	if (typeof matcher === "function") return matcher(value, ctx);
+	if (Array.isArray(matcher)) return matcher.includes(value);
+	return value === matcher;
+}
+function getOriginFromUrl(url) {
+	try {
+		return new URL(url).origin;
+	} catch {
+		return;
+	}
+}
+function isRefererSameOrigin(referer, requestOrigin) {
+	if (referer === requestOrigin) return true;
+	if (!referer.startsWith(requestOrigin)) return false;
+	if (referer.length === requestOrigin.length) return true;
+	const code = referer.charCodeAt(requestOrigin.length);
+	return code === 47 || code === 63 || code === 35;
+}
+async function getFailureResponse(opts, ctx) {
+	if (typeof opts.failureResponse === "function") return opts.failureResponse(ctx);
+	return opts.failureResponse?.clone() ?? new Response("Forbidden", { status: 403 });
 }
 function getDefaultSerovalPlugins() {
 	return [...(getStartOptions()?.serializationAdapters)?.map(makeSerovalPlugin) ?? [], ...defaultSerovalPlugins];
@@ -1317,8 +1370,8 @@ var getBaseManifest = getProdBaseManifest;
 var createEarlyHintsForRequest = createEarlyHintsCollector;
 async function loadEntries() {
 	const [routerEntry, startEntry, pluginAdapters] = await Promise.all([
-		import("./router-Bexs1BJ5.mjs").then((n) => n.t),
-		import("./start-C-IGF5Zg.mjs"),
+		import("./router-B9e-0Afg.mjs").then((n) => n.t),
+		import("./start-3eYGhwKM.mjs"),
 		import("./empty-plugin-adapters-D9UWiqvJ.mjs")
 	]);
 	return {

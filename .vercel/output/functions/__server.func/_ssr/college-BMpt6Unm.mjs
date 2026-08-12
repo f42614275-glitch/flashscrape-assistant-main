@@ -2,8 +2,8 @@ import { i as __toESM } from "../_runtime.mjs";
 import { n as require_react } from "../_libs/@radix-ui/react-compose-refs+[...].mjs";
 import { i as require_jsx_runtime } from "../_libs/@radix-ui/react-label+[...].mjs";
 import { i as SiteHeader, n as NavLink, r as SiteFooter, t as Button } from "./button-COGY-sf9.mjs";
-import { i as analyzeCollege, n as Label, o as useServerFn, t as Input } from "./careercompass.functions-BDX9WomY.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/college-BFtUqUWO.js
+import { i as analyzeCollege, n as Label, o as useServerFn, t as Input } from "./careercompass.functions-CVDFAxus.mjs";
+//#region node_modules/.nitro/vite/services/ssr/assets/college-BMpt6Unm.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var CATEGORIES = [
