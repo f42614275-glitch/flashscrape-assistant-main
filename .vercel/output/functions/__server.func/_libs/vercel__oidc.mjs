@@ -1,6 +1,5 @@
 import { t as __commonJSMin } from "../_runtime.mjs";
 import { a as require_token_error, i as require_token_util } from "./@ai-sdk/gateway+[...].mjs";
-import processModule from "node:process";
 //#region node_modules/@vercel/oidc/dist/token.js
 var require_token = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var __defProp = Object.defineProperty;
@@ -48,7 +47,7 @@ var require_token = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			if (!maybeToken) throw new import_token_error.VercelOidcTokenError("Failed to refresh OIDC token");
 			(0, import_token_util.saveToken)(maybeToken, projectId);
 		}
-		processModule.env.VERCEL_OIDC_TOKEN = maybeToken.token;
+		process.env.VERCEL_OIDC_TOKEN = maybeToken.token;
 	}
 	0 && (module.exports = { refreshToken });
 }));

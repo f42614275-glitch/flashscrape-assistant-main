@@ -2,7 +2,6 @@ import { r as createServerFn, t as TSS_SERVER_FUNCTION } from "./server-ey4Ql8m1
 import { Ct as string, bt as number, ct as _enum, ft as array, pt as boolean, xt as object } from "../_libs/@ai-sdk/gateway+[...].mjs";
 import { t as generateText } from "../_libs/ai.mjs";
 import { t as createOpenAICompatible } from "../_libs/ai-sdk__openai-compatible.mjs";
-import processModule from "node:process";
 //#region node_modules/.nitro/vite/services/ssr/assets/careercompass.functions-BRPy_fRW.js
 var createServerRpc = (serverFnMeta, splitImportFn) => {
 	const url = "/_serverFn/" + serverFnMeta.id;
@@ -98,7 +97,7 @@ function createLovableAiGatewayProvider(apiKey) {
 	});
 }
 function requireLovableApiKey() {
-	const key = processModule.env["GEMINI_API_KEY"];
+	const key = process.env["GEMINI_API_KEY"];
 	if (!key) throw new Error("AI is not configured yet. Missing GEMINI_API_KEY.");
 	return key;
 }
@@ -111,7 +110,7 @@ function createGeminiProvider(apiKey) {
 	});
 }
 function getGeminiApiKey() {
-	return processModule.env["GEMINI_API_KEY"] || void 0;
+	return process.env["GEMINI_API_KEY"] || void 0;
 }
 /** Strips markdown fences and parses the model's JSON output. */
 function parseModelJson(raw) {
@@ -160,8 +159,8 @@ async function insertRow(table, row) {
 }
 var GATEWAY_V2 = "https://connector-gateway.lovable.dev/firecrawl/v2";
 function headers() {
-	const lovableKey = processModule.env["GEMINI_API_KEY"];
-	const firecrawlKey = processModule.env["FIRECRAWL_API_KEY"];
+	const lovableKey = process.env["GEMINI_API_KEY"];
+	const firecrawlKey = process.env["FIRECRAWL_API_KEY"];
 	if (!lovableKey || !firecrawlKey) throw new Error("Web research is not configured yet (missing Firecrawl connection).");
 	return {
 		"Content-Type": "application/json",

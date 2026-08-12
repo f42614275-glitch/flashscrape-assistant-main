@@ -1,5 +1,4 @@
 import { A as getToolCaller, C as detectMediaType, Ct as string, D as filterNullable, E as fetchWithValidatedRedirects, F as isFullMediaType, G as retryWithExponentialBackoff, H as readResponseWithSizeLimit, I as isProviderReference, K as safeParseJSON, L as isUrlSupported, M as isBuffer, P as isExecutableTool, Q as zodSchema, R as lazySchema, St as record, T as executeTool, Tt as unknown, U as resolve, X as withUserAgentSuffix, Y as validateTypes, _t as literal, at as TypeValidationError, bt as number, ct as _enum, d as cancelResponseBody, ft as array, g as convertUint8ArrayToBase64, gt as lazy, ht as discriminatedUnion, k as getRuntimeEnvironmentUserAgent, l as asArray, lt as _instanceof, mt as custom, n as GatewayError, nt as APICallError, o as DEFAULT_MAX_DOWNLOAD_SIZE, p as convertBase64ToUint8Array, pt as boolean, q as safeValidateTypes, r as gateway, rt as InvalidPromptError, s as DownloadError, st as getErrorMessage, t as GatewayAuthenticationError, tt as AISDKError, u as asSchema, ut as _null, v as createIdGenerator, vt as looseObject, wt as union, xt as object, yt as never } from "./@ai-sdk/gateway+[...].mjs";
-import processModule from "node:process";
 //#region node_modules/ai/dist/index.js
 var __defProp = Object.defineProperty;
 var __export = (target, all) => {
@@ -288,7 +287,7 @@ function formatWarning({ warning, provider, model }) {
 var FIRST_WARNING_INFO_MESSAGE = "AI SDK Warning System: To turn off warning logging, set the AI_SDK_LOG_WARNINGS global to false.";
 var hasLoggedBefore = false;
 function emitWarning({ message, type }) {
-	if (typeof processModule !== "undefined" && typeof processModule.emitWarning === "function") processModule.emitWarning(message, { type });
+	if (typeof process !== "undefined" && typeof process.emitWarning === "function") process.emitWarning(message, { type });
 	else console.warn(message);
 }
 var logWarnings = (options) => {
@@ -1660,7 +1659,7 @@ async function standardizePrompt({ allowSystemInMessages = false, system, instru
 }
 function wrapGatewayError(error) {
 	if (!GatewayAuthenticationError.isInstance(error)) return error;
-	const isProductionEnv = (processModule == null ? void 0 : "production") === "production";
+	const isProductionEnv = (process == null ? void 0 : "production") === "production";
 	const moreInfoURL = "https://ai-sdk.dev/unauthenticated-ai-gateway";
 	if (isProductionEnv) return new AISDKError({
 		name: "GatewayError",
@@ -2736,7 +2735,7 @@ function mergeCallbacks(...callbacks) {
 var AI_SDK_TELEMETRY_TRACING_CHANNEL = "ai:telemetry";
 function isNodeRuntime() {
 	var _a23;
-	return typeof processModule !== "undefined" && ((_a23 = processModule.release) == null ? void 0 : _a23.name) === "node";
+	return typeof process !== "undefined" && ((_a23 = process.release) == null ? void 0 : _a23.name) === "node";
 }
 var diagnosticsChannelPromise;
 async function loadDiagnosticsChannel() {

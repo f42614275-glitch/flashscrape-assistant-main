@@ -1,7 +1,6 @@
 globalThis.__nitro_main__ = import.meta.url;
-globalThis.__nitro_main__ = import.meta.url;
 import { n as HTTPError, r as defineLazyEventHandler, t as H3Core } from "./_libs/h3+rou3+srvx.mjs";
-import { r as FastResponse } from "./_libs/h3-v2+rou3+srvx.mjs";
+import { r as NodeResponse } from "./_libs/h3-v2+rou3+srvx.mjs";
 //#region #nitro-vite-setup
 function lazyService(loader) {
 	let promise, mod;
@@ -14,10 +13,32 @@ function lazyService(loader) {
 var services = { ["ssr"]: lazyService(() => import("./_ssr/ssr.mjs")) };
 globalThis.__nitro_vite_envs__ = services;
 //#endregion
+//#region node_modules/nitro/dist/runtime/internal/route-rules.mjs
+var headers = ((m) => function headersRouteRule(event) {
+	for (const [key, value] of Object.entries(m.options || {})) event.res.headers.set(key, value);
+});
+//#endregion
 //#region #nitro/virtual/routing
-var findRouteRules = (m, p) => {
-	return [];
-};
+var findRouteRules = /* @__PURE__ */ (() => {
+	const $0 = [{
+		name: "headers",
+		route: "/assets/**",
+		handler: headers,
+		options: { "cache-control": "public, max-age=31536000, immutable" }
+	}];
+	return (m, p) => {
+		let r = [];
+		if (p.charCodeAt(p.length - 1) === 47) p = p.slice(0, -1) || "/";
+		let s = p.split("/");
+		if (s.length > 1) {
+			if (s[1] === "assets") r.unshift({
+				data: $0,
+				params: { "_": s.slice(2).join("/") }
+			});
+		}
+		return r;
+	};
+})();
 var _lazy_7dok7w = defineLazyEventHandler(() => import("./_chunks/ssr-renderer.mjs"));
 var findRoute = /* @__PURE__ */ (() => {
 	const data = {
@@ -36,7 +57,7 @@ var findRoute = /* @__PURE__ */ (() => {
 //#region node_modules/nitro/dist/runtime/internal/error/prod.mjs
 var errorHandler = (error, event) => {
 	const res = defaultHandler(error, event);
-	return new FastResponse(typeof res.body === "string" ? res.body : JSON.stringify(res.body, null, 2), res);
+	return new NodeResponse(typeof res.body === "string" ? res.body : JSON.stringify(res.body, null, 2), res);
 };
 function defaultHandler(error, event) {
 	const unhandled = error.unhandled ?? !HTTPError.isError(error);
@@ -109,6 +130,16 @@ function createNitroApp() {
 function createH3App(config) {
 	const h3App = new H3Core(config);
 	h3App["~findRoute"] = (event) => findRoute(event.req.method, event.url.pathname);
+	h3App["~getMiddleware"] = (event, route) => {
+		const pathname = event.url.pathname;
+		const method = event.req.method;
+		const middleware = [];
+		const routeRules = getRouteRules(method, pathname);
+		event.context.routeRules = routeRules?.routeRules;
+		if (routeRules?.routeRuleMiddleware.length) middleware.push(...routeRules.routeRuleMiddleware);
+		if (route?.data?.middleware?.length) middleware.push(...route.data.middleware);
+		return middleware;
+	};
 	return h3App;
 }
 //#endregion

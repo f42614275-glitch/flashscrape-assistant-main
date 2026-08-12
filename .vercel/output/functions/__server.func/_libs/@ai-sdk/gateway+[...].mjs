@@ -1,6 +1,4 @@
 import { i as __toESM, r as __require, t as __commonJSMin } from "../../_runtime.mjs";
-import processModule from "node:process";
-import { Buffer } from "node:buffer";
 //#region node_modules/zod/v4/core/core.js
 var _a$4;
 function $constructor(name, initializer, params) {
@@ -2927,7 +2925,7 @@ function initializeContext(params) {
 		external: params?.external ?? void 0
 	};
 }
-function process(schema, ctx, _params = {
+function process$1(schema, ctx, _params = {
 	path: [],
 	schemaPath: []
 }) {
@@ -2964,7 +2962,7 @@ function process(schema, ctx, _params = {
 		const parent = schema._zod.parent;
 		if (parent) {
 			if (!result.ref) result.ref = parent;
-			process(parent, ctx, params);
+			process$1(parent, ctx, params);
 			ctx.seen.get(parent).isParent = true;
 		}
 	}
@@ -3186,7 +3184,7 @@ var createToJSONSchemaMethod = (schema, processors = {}) => (params) => {
 		...params,
 		processors
 	});
-	process(schema, ctx);
+	process$1(schema, ctx);
 	extractDefs(ctx, schema);
 	return finalize(ctx, schema);
 };
@@ -3198,7 +3196,7 @@ var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) =
 		io,
 		processors
 	});
-	process(schema, ctx);
+	process$1(schema, ctx);
 	extractDefs(ctx, schema);
 	return finalize(ctx, schema);
 };
@@ -3368,7 +3366,7 @@ var arrayProcessor = (schema, ctx, _json, params) => {
 	if (typeof minimum === "number") json.minItems = minimum;
 	if (typeof maximum === "number") json.maxItems = maximum;
 	json.type = "array";
-	json.items = process(def.element, ctx, {
+	json.items = process$1(def.element, ctx, {
 		...params,
 		path: [...params.path, "items"]
 	});
@@ -3379,7 +3377,7 @@ var objectProcessor = (schema, ctx, _json, params) => {
 	json.type = "object";
 	json.properties = {};
 	const shape = def.shape;
-	for (const key in shape) json.properties[key] = process(shape[key], ctx, {
+	for (const key in shape) json.properties[key] = process$1(shape[key], ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3397,7 +3395,7 @@ var objectProcessor = (schema, ctx, _json, params) => {
 	if (def.catchall?._zod.def.type === "never") json.additionalProperties = false;
 	else if (!def.catchall) {
 		if (ctx.io === "output") json.additionalProperties = false;
-	} else if (def.catchall) json.additionalProperties = process(def.catchall, ctx, {
+	} else if (def.catchall) json.additionalProperties = process$1(def.catchall, ctx, {
 		...params,
 		path: [...params.path, "additionalProperties"]
 	});
@@ -3405,7 +3403,7 @@ var objectProcessor = (schema, ctx, _json, params) => {
 var unionProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
 	const isExclusive = def.inclusive === false;
-	const options = def.options.map((x, i) => process(x, ctx, {
+	const options = def.options.map((x, i) => process$1(x, ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3418,7 +3416,7 @@ var unionProcessor = (schema, ctx, json, params) => {
 };
 var intersectionProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	const a = process(def.left, ctx, {
+	const a = process$1(def.left, ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3426,7 +3424,7 @@ var intersectionProcessor = (schema, ctx, json, params) => {
 			0
 		]
 	});
-	const b = process(def.right, ctx, {
+	const b = process$1(def.right, ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3443,7 +3441,7 @@ var tupleProcessor = (schema, ctx, _json, params) => {
 	json.type = "array";
 	const prefixPath = ctx.target === "draft-2020-12" ? "prefixItems" : "items";
 	const restPath = ctx.target === "draft-2020-12" ? "items" : ctx.target === "openapi-3.0" ? "items" : "additionalItems";
-	const prefixItems = def.items.map((x, i) => process(x, ctx, {
+	const prefixItems = def.items.map((x, i) => process$1(x, ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3451,7 +3449,7 @@ var tupleProcessor = (schema, ctx, _json, params) => {
 			i
 		]
 	}));
-	const rest = def.rest ? process(def.rest, ctx, {
+	const rest = def.rest ? process$1(def.rest, ctx, {
 		...params,
 		path: [
 			...params.path,
@@ -3482,7 +3480,7 @@ var recordProcessor = (schema, ctx, _json, params) => {
 	const keyType = def.keyType;
 	const patterns = keyType._zod.bag?.patterns;
 	if (def.mode === "loose" && patterns && patterns.size > 0) {
-		const valueSchema = process(def.valueType, ctx, {
+		const valueSchema = process$1(def.valueType, ctx, {
 			...params,
 			path: [
 				...params.path,
@@ -3493,11 +3491,11 @@ var recordProcessor = (schema, ctx, _json, params) => {
 		json.patternProperties = {};
 		for (const pattern of patterns) json.patternProperties[pattern.source] = valueSchema;
 	} else {
-		if (ctx.target === "draft-07" || ctx.target === "draft-2020-12") json.propertyNames = process(def.keyType, ctx, {
+		if (ctx.target === "draft-07" || ctx.target === "draft-2020-12") json.propertyNames = process$1(def.keyType, ctx, {
 			...params,
 			path: [...params.path, "propertyNames"]
 		});
-		json.additionalProperties = process(def.valueType, ctx, {
+		json.additionalProperties = process$1(def.valueType, ctx, {
 			...params,
 			path: [...params.path, "additionalProperties"]
 		});
@@ -3510,7 +3508,7 @@ var recordProcessor = (schema, ctx, _json, params) => {
 };
 var nullableProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	const inner = process(def.innerType, ctx, params);
+	const inner = process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	if (ctx.target === "openapi-3.0") {
 		seen.ref = def.innerType;
@@ -3519,27 +3517,27 @@ var nullableProcessor = (schema, ctx, json, params) => {
 };
 var nonoptionalProcessor = (schema, ctx, _json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 };
 var defaultProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 	json.default = JSON.parse(JSON.stringify(def.defaultValue));
 };
 var prefaultProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 	if (ctx.io === "input") json._prefault = JSON.parse(JSON.stringify(def.defaultValue));
 };
 var catchProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 	let catchValue;
@@ -3554,32 +3552,32 @@ var pipeProcessor = (schema, ctx, _json, params) => {
 	const def = schema._zod.def;
 	const inIsTransform = def.in._zod.traits.has("$ZodTransform");
 	const innerType = ctx.io === "input" ? inIsTransform ? def.out : def.in : def.out;
-	process(innerType, ctx, params);
+	process$1(innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = innerType;
 };
 var readonlyProcessor = (schema, ctx, json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 	json.readOnly = true;
 };
 var promiseProcessor = (schema, ctx, _json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 };
 var optionalProcessor = (schema, ctx, _json, params) => {
 	const def = schema._zod.def;
-	process(def.innerType, ctx, params);
+	process$1(def.innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = def.innerType;
 };
 var lazyProcessor = (schema, ctx, _json, params) => {
 	const innerType = schema._zod.innerType;
-	process(innerType, ctx, params);
+	process$1(innerType, ctx, params);
 	const seen = ctx.seen.get(schema);
 	seen.ref = innerType;
 };
@@ -3634,7 +3632,7 @@ function toJSONSchema(input, params) {
 		const defs = {};
 		for (const entry of registry._idmap.entries()) {
 			const [_, schema] = entry;
-			process(schema, ctx);
+			process$1(schema, ctx);
 		}
 		const schemas = {};
 		ctx.external = {
@@ -3654,7 +3652,7 @@ function toJSONSchema(input, params) {
 		...params,
 		processors: allProcessors
 	});
-	process(input, ctx);
+	process$1(input, ctx);
 	extractDefs(ctx, input);
 	return finalize(ctx, input);
 }
@@ -6115,8 +6113,8 @@ function testRegExpFromStart(pattern, value) {
 }
 function loadOptionalSetting({ settingValue, environmentVariableName }) {
 	if (typeof settingValue === "string") return settingValue;
-	if (settingValue != null || typeof processModule === "undefined") return;
-	settingValue = processModule.env[environmentVariableName];
+	if (settingValue != null || typeof process === "undefined") return;
+	settingValue = process.env[environmentVariableName];
 	if (settingValue == null || typeof settingValue !== "string") return;
 	return settingValue;
 }
@@ -7871,7 +7869,7 @@ ${error.message}`;
 		return token;
 	}
 	function getVercelOidcTokenSync() {
-		const token = (0, import_get_context.getContext)().headers?.["x-vercel-oidc-token"] ?? processModule.env.VERCEL_OIDC_TOKEN;
+		const token = (0, import_get_context.getContext)().headers?.["x-vercel-oidc-token"] ?? process.env.VERCEL_OIDC_TOKEN;
 		if (!token) throw new Error(`The 'x-vercel-oidc-token' header is missing from the request. Do you have the OIDC option enabled in the Vercel project settings?`);
 		return token;
 	}
@@ -7961,13 +7959,13 @@ var require_token_io = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		getUserDataDir: () => getUserDataDir
 	});
 	module.exports = __toCommonJS(token_io_exports);
-	var import_path = __toESM(__require("node:path"));
-	var import_fs = __toESM(__require("node:fs"));
-	var import_os$1 = __toESM(__require("node:os"));
+	var import_path = __toESM(__require("path"));
+	var import_fs = __toESM(__require("fs"));
+	var import_os$1 = __toESM(__require("os"));
 	var import_token_error = require_token_error();
 	function findRootDir() {
 		try {
-			let dir = processModule.cwd();
+			let dir = process.cwd();
 			while (dir !== import_path.default.dirname(dir)) {
 				const pkgPath = import_path.default.join(dir, ".vercel");
 				if (import_fs.default.existsSync(pkgPath)) return dir;
@@ -7979,12 +7977,12 @@ var require_token_io = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		return null;
 	}
 	function getUserDataDir() {
-		if (processModule.env.XDG_DATA_HOME) return processModule.env.XDG_DATA_HOME;
+		if (process.env.XDG_DATA_HOME) return process.env.XDG_DATA_HOME;
 		switch (import_os$1.default.platform()) {
 			case "darwin": return import_path.default.join(import_os$1.default.homedir(), "Library/Application Support");
 			case "linux": return import_path.default.join(import_os$1.default.homedir(), ".local/share");
 			case "win32":
-				if (processModule.env.LOCALAPPDATA) return processModule.env.LOCALAPPDATA;
+				if (process.env.LOCALAPPDATA) return process.env.LOCALAPPDATA;
 				return null;
 			default: return null;
 		}
@@ -8030,12 +8028,12 @@ var require_auth_config = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		writeAuthConfig: () => writeAuthConfig
 	});
 	module.exports = __toCommonJS(auth_config_exports);
-	var fs$1 = __toESM(__require("node:fs"));
-	var path$1 = __toESM(__require("node:path"));
+	var fs$1 = __toESM(__require("fs"));
+	var path$1 = __toESM(__require("path"));
 	var import_token_util = require_token_util();
 	function getAuthConfigPath() {
 		const dataDir = (0, import_token_util.getVercelDataDir)();
-		if (!dataDir) throw new Error(`Unable to find Vercel CLI data directory. Your platform: ${processModule.platform}. Supported: darwin, linux, win32.`);
+		if (!dataDir) throw new Error(`Unable to find Vercel CLI data directory. Your platform: ${process.platform}. Supported: darwin, linux, win32.`);
 		return path$1.join(dataDir, "auth.json");
 	}
 	function readAuthConfig() {
@@ -8100,10 +8098,10 @@ var require_oauth = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		refreshTokenRequest: () => refreshTokenRequest
 	});
 	module.exports = __toCommonJS(oauth_exports);
-	var import_os = __require("node:os");
+	var import_os = __require("os");
 	var VERCEL_ISSUER = "https://vercel.com";
 	var VERCEL_CLI_CLIENT_ID = "cl_HYyOPBNtFMfHhaUn9L4QPfTZz6TP47bp";
-	var userAgent = `@vercel/oidc node-${processModule.version} ${(0, import_os.platform)()} (${(0, import_os.arch)()}) ${(0, import_os.hostname)()}`;
+	var userAgent = `@vercel/oidc node-${process.version} ${(0, import_os.platform)()} (${(0, import_os.arch)()}) ${(0, import_os.hostname)()}`;
 	var _tokenEndpoint = null;
 	async function getTokenEndpoint() {
 		if (_tokenEndpoint) return _tokenEndpoint;
@@ -8189,8 +8187,8 @@ var require_token_util = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		saveToken: () => saveToken
 	});
 	module.exports = __toCommonJS(token_util_exports);
-	var path = __toESM(__require("node:path"));
-	var fs = __toESM(__require("node:fs"));
+	var path = __toESM(__require("path"));
+	var fs = __toESM(__require("fs"));
 	var import_token_error = require_token_error();
 	var import_token_io = require_token_io();
 	var import_auth_config = require_auth_config();
